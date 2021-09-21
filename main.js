@@ -14,7 +14,6 @@ renderer.setPixelRatio(window.devicePixelRatio);
 class GLTFModels {
 
     constructor(options) {
-
         this.name = options.name;
         this.price = options.price;
         this.id = options.id;
@@ -26,11 +25,6 @@ class GLTFModels {
         this.cameraPositionX = options.cameraPositionX;
         this.cameraPositionY = options.cameraPositionY;
         this.cameraPositionZ = options.cameraPositionZ;
-
-        this.camera = new THREE.PerspectiveCamera(this.cameraFov, window.innerWidth / window.innerHeight, 0.1, 1000);
-        this.scene = new THREE.Scene();
-        this.controls = new OrbitControls(this.camera, canvas);
-
     }
 
     createElem() {
@@ -44,10 +38,28 @@ class GLTFModels {
 
 
     makeScene() {
+
+        this.camera = new THREE.PerspectiveCamera(this.cameraFov, window.innerWidth / window.innerHeight, 0.1, 1000);
+        this.scene = new THREE.Scene();
+        this.controls = new OrbitControls(this.camera, document.querySelector(`#${this.id}`));
+
         const scene = this.scene;
         const camera = this.camera;
         const controls = this.controls;
+
+
+        controls.maxDistance = 50;
+        controls.minDistance = 0;
+        controls.enableDamping = true;
+
+        /* controls.autoRotate = true;
+        controls.autoRotateSpeed = 5; */
+
         camera.position.set(this.cameraPositionX, this.cameraPositionY, this.cameraPositionZ);
+
+
+
+
 
         const pointLight = new THREE.PointLight(0xffffff);
         pointLight.position.set(5, 5, 5);
@@ -84,7 +96,7 @@ NewInStockFirstModel: {
         id: "round-shaped1",
         loadPath: "round-shaped",
         cameraFov: 60,
-        cameraPositionX: 5,
+        cameraPositionX: 0,
         cameraPositionY: 5,
         cameraPositionZ: 30,
     });
@@ -95,7 +107,6 @@ NewInStockFirstModel: {
         camera.aspect = rect.width / rect.height;
         camera.updateProjectionMatrix();
         model.addModelRotation(-0.009);
-        /*  controls.update(); */
         renderer.render(scene, camera);
     }, controls);
 }
@@ -112,19 +123,13 @@ BestsellersFirstModel: {
         cameraPositionZ: 7,
     });
 
-
     const { scene, camera, controls } = model2.makeScene();
     model2.loadModel();
     model2.addScene(model2.createElem(), (time, rect) => {
         camera.aspect = rect.width / rect.height;
         camera.updateProjectionMatrix();
-        /* model2.addModelRotation(-0.009); */
-        controls.autoRotate = true;
-        controls.autoRotateSpeed = 50;
-        controls.update();
-
+        model2.addModelRotation(-0.009);
         renderer.render(scene, camera,);
-
     }, controls);
 }
 
@@ -148,13 +153,10 @@ function animate(time) {
     renderer.setClearColor(clearColor, 0);
     renderer.clear(true, true);
     renderer.setScissorTest(true);
-
     const transform = `translateY(${window.scrollY}px)`;
     renderer.domElement.style.transform = transform;
 
-
     for (const { elem, fn, controls } of sceneElements) {
-
         const rect = elem.getBoundingClientRect();
         const { left, right, top, bottom, width, height } = rect;
         const isOffscreen =
@@ -169,17 +171,9 @@ function animate(time) {
             fn(time, rect);
 
         }
-        controls.enableRotate = true;
-        controls.enableDamping = true;
-        controls.dampingFactor = 0.25;
         controls.update();
-
     }
-
-
     requestAnimationFrame(animate);
-
-
 }
 
 requestAnimationFrame(animate);
