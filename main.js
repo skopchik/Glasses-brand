@@ -2,6 +2,7 @@
 
 import * as THREE from 'https://threejsfundamentals.org/threejs/resources/threejs/r132/build/three.module.js';
 import { GLTFLoader } from 'https://threejsfundamentals.org/threejs/resources/threejs/r132/examples/jsm/loaders/GLTFLoader.js';
+import { OrbitControls } from 'https://threejsfundamentals.org/threejs/resources/threejs/r132/examples/jsm/controls/OrbitControls.js';
 
 const canvas = document.querySelector('#c');
 const renderer = new THREE.WebGLRenderer({ canvas, alpha: true });
@@ -26,8 +27,10 @@ class GLTFModels {
         this.cameraPositionY = options.cameraPositionY;
         this.cameraPositionZ = options.cameraPositionZ;
 
-        this.camera = new THREE.PerspectiveCamera(this.cameraFov, window.innerWidth / window.innerHeight, 0.1, 100);
+        this.camera = new THREE.PerspectiveCamera(this.cameraFov, window.innerWidth / window.innerHeight, 0.1, 1000);
         this.scene = new THREE.Scene();
+        this.controls = new OrbitControls(this.camera, canvas);
+
     }
 
     createElem() {
@@ -35,15 +38,15 @@ class GLTFModels {
         return elem;
     }
 
-    addScene(elem, fn) {
-        sceneElements.push({ elem, fn });
+    addScene(elem, fn, controls) {
+        sceneElements.push({ elem, fn, controls });
     }
 
 
     makeScene() {
         const scene = this.scene;
         const camera = this.camera;
-
+        const controls = this.controls;
         camera.position.set(this.cameraPositionX, this.cameraPositionY, this.cameraPositionZ);
 
         const pointLight = new THREE.PointLight(0xffffff);
@@ -51,7 +54,7 @@ class GLTFModels {
         const ambientLight = new THREE.AmbientLight(0xffffff);
         scene.add(pointLight, ambientLight);
 
-        return { scene, camera };
+        return { scene, camera, controls };
     }
 
     loadModel() {
@@ -86,14 +89,15 @@ NewInStockFirstModel: {
         cameraPositionZ: 30,
     });
 
-    const { scene, camera } = model.makeScene();
+    const { scene, camera, controls } = model.makeScene();
     model.loadModel();
     model.addScene(model.createElem(), (time, rect) => {
         camera.aspect = rect.width / rect.height;
         camera.updateProjectionMatrix();
         model.addModelRotation(-0.009);
+        /*  controls.update(); */
         renderer.render(scene, camera);
-    });
+    }, controls);
 }
 
 BestsellersFirstModel: {
@@ -109,18 +113,24 @@ BestsellersFirstModel: {
     });
 
 
-    const { scene, camera } = model2.makeScene();
+    const { scene, camera, controls } = model2.makeScene();
     model2.loadModel();
     model2.addScene(model2.createElem(), (time, rect) => {
         camera.aspect = rect.width / rect.height;
         camera.updateProjectionMatrix();
-        model2.addModelRotation(-0.009);
-        renderer.render(scene, camera);
-    });
+        /* model2.addModelRotation(-0.009); */
+        controls.autoRotate = true;
+        controls.autoRotateSpeed = 50;
+        controls.update();
+
+        renderer.render(scene, camera,);
+
+    }, controls);
 }
 
 
 function resizeRendererToDisplaySize(renderer) {
+
     const canvas = renderer.domElement;
     const width = canvas.clientWidth;
     const height = canvas.clientHeight;
@@ -131,7 +141,7 @@ function resizeRendererToDisplaySize(renderer) {
     return needResize;
 }
 
-function render(time) {
+function animate(time) {
     time *= 0.001;
     resizeRendererToDisplaySize(renderer);
     renderer.setScissorTest(false);
@@ -142,7 +152,9 @@ function render(time) {
     const transform = `translateY(${window.scrollY}px)`;
     renderer.domElement.style.transform = transform;
 
-    for (const { elem, fn } of sceneElements) {
+
+    for (const { elem, fn, controls } of sceneElements) {
+
         const rect = elem.getBoundingClientRect();
         const { left, right, top, bottom, width, height } = rect;
         const isOffscreen =
@@ -155,11 +167,20 @@ function render(time) {
             renderer.setScissor(left, positiveYUpBottom, width, height);
             renderer.setViewport(left, positiveYUpBottom, width, height);
             fn(time, rect);
+
         }
+        controls.enableRotate = true;
+        controls.enableDamping = true;
+        controls.dampingFactor = 0.25;
+        controls.update();
+
     }
 
-    requestAnimationFrame(render);
+
+    requestAnimationFrame(animate);
+
+
 }
 
-requestAnimationFrame(render);
+requestAnimationFrame(animate);
 
