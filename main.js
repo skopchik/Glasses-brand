@@ -47,19 +47,13 @@ class GLTFModels {
         const camera = this.camera;
         const controls = this.controls;
 
-
         controls.maxDistance = 50;
         controls.minDistance = 0;
         controls.enableDamping = true;
-
-        /* controls.autoRotate = true;
-        controls.autoRotateSpeed = 5; */
+        controls.autoRotate = true;
+        controls.autoRotateSpeed = 5;
 
         camera.position.set(this.cameraPositionX, this.cameraPositionY, this.cameraPositionZ);
-
-
-
-
 
         const pointLight = new THREE.PointLight(0xffffff);
         pointLight.position.set(5, 5, 5);
@@ -90,7 +84,7 @@ class GLTFModels {
 }
 
 NewInStockFirstModel: {
-    const model = new GLTFModels({
+    const model1 = new GLTFModels({
         name: "Round Glasses",
         price: "220",
         id: "round-shaped1",
@@ -101,18 +95,60 @@ NewInStockFirstModel: {
         cameraPositionZ: 30,
     });
 
-    const { scene, camera, controls } = model.makeScene();
-    model.loadModel();
-    model.addScene(model.createElem(), (time, rect) => {
+    const { scene, camera, controls } = model1.makeScene();
+    model1.loadModel();
+    model1.addScene(model1.createElem(), (time, rect) => {
         camera.aspect = rect.width / rect.height;
         camera.updateProjectionMatrix();
-        model.addModelRotation(-0.009);
+        /* model1.addModelRotation(-0.009); */
+        renderer.render(scene, camera);
+    }, controls);
+}
+
+NewInStockSecondModel: {
+    const model2 = new GLTFModels({
+        name: "Round Glasses",
+        price: "220",
+        id: "round-shaped2",
+        loadPath: "round-shaped",
+        cameraFov: 60,
+        cameraPositionX: 0,
+        cameraPositionY: 5,
+        cameraPositionZ: 30,
+    });
+
+    const { scene, camera, controls } = model2.makeScene();
+    model2.loadModel();
+    model2.addScene(model2.createElem(), (time, rect) => {
+        camera.aspect = rect.width / rect.height;
+        camera.updateProjectionMatrix();
+        renderer.render(scene, camera);
+    }, controls);
+}
+
+NewInStockThirdModel: {
+    const model3 = new GLTFModels({
+        name: "Round Glasses",
+        price: "220",
+        id: "round-shaped3",
+        loadPath: "round-shaped",
+        cameraFov: 60,
+        cameraPositionX: 0,
+        cameraPositionY: 5,
+        cameraPositionZ: 30,
+    });
+
+    const { scene, camera, controls } = model3.makeScene();
+    model3.loadModel();
+    model3.addScene(model3.createElem(), (time, rect) => {
+        camera.aspect = rect.width / rect.height;
+        camera.updateProjectionMatrix();
         renderer.render(scene, camera);
     }, controls);
 }
 
 BestsellersFirstModel: {
-    const model2 = new GLTFModels({
+    const model4 = new GLTFModels({
         name: "Heart Glasses",
         price: "175",
         id: "heart-shaped1",
@@ -123,12 +159,53 @@ BestsellersFirstModel: {
         cameraPositionZ: 7,
     });
 
-    const { scene, camera, controls } = model2.makeScene();
-    model2.loadModel();
-    model2.addScene(model2.createElem(), (time, rect) => {
+    const { scene, camera, controls } = model4.makeScene();
+    model4.loadModel();
+    model4.addScene(model4.createElem(), (time, rect) => {
         camera.aspect = rect.width / rect.height;
         camera.updateProjectionMatrix();
-        model2.addModelRotation(-0.009);
+        renderer.render(scene, camera,);
+    }, controls);
+}
+
+BestsellersSecondModel: {
+    const model5 = new GLTFModels({
+        name: "Heart Glasses",
+        price: "175",
+        id: "heart-shaped2",
+        loadPath: "heart-shaped",
+        cameraFov: 60,
+        cameraPositionX: 1,
+        cameraPositionY: -1,
+        cameraPositionZ: 7,
+    });
+
+    const { scene, camera, controls } = model5.makeScene();
+    model5.loadModel();
+    model5.addScene(model5.createElem(), (time, rect) => {
+        camera.aspect = rect.width / rect.height;
+        camera.updateProjectionMatrix();
+        renderer.render(scene, camera,);
+    }, controls);
+}
+
+BestsellersThirdModel: {
+    const model6 = new GLTFModels({
+        name: "Heart Glasses",
+        price: "175",
+        id: "heart-shaped3",
+        loadPath: "heart-shaped",
+        cameraFov: 60,
+        cameraPositionX: 1,
+        cameraPositionY: -1,
+        cameraPositionZ: 7,
+    });
+
+    const { scene, camera, controls } = model6.makeScene();
+    model6.loadModel();
+    model6.addScene(model6.createElem(), (time, rect) => {
+        camera.aspect = rect.width / rect.height;
+        camera.updateProjectionMatrix();
         renderer.render(scene, camera,);
     }, controls);
 }
