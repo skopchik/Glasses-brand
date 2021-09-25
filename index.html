@@ -12,9 +12,13 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="css/reset.css" />
-    <link rel="stylesheet" href="css/style.css" />
     <link rel="stylesheet" href="css/normalize.css" />
+    <link rel="stylesheet" href="css/style.css" />
+    <!-- <link rel="stylesheet" href="css/carousel.css" /> -->
     <script defer type="module" src="./main.js"></script>
+    <script defer src="./animate.js"></script>
+    <!-- <script src="./vue-carousel-3d/vue-carousel-3d-master/docs/public/js/vue.js"></script>
+    <script src="./vue-carousel-3d/vue-carousel-3d-master/dist/carousel-3d.umd.min.js"></script> -->
   </head>
 
   <body>
@@ -28,12 +32,37 @@
         <a href="#" class="header-navbar-link">Customer care</a>
       </div>
     </header>
+    <!--  
+    <div id="example">
+      <carousel-3d :controls-visible="true" :clickable="false">
+        <slide v-for="(slide, i) in slides" :index="i">
+          <figure>
+            <figcaption>ААААААААААААААААААА</figcaption>
+          </figure>
+        </slide>
+      </carousel-3d>
+    </div>
+
+   <script>
+      new Vue({
+        el: "#example",
+        data: {
+          slides: 5,
+        },
+        components: {
+          "carousel-3d": window["carousel-3d"].Carousel3d,
+          slide: window["carousel-3d"].Slide,
+        },
+      });
+    </script> -->
 
     <div class="promo-container">
-      <div class="promo-img">
-        <img src="./images/promo-img.jpg" />
-        <span class="promo-text">We treat your eyes with care</span>
-        <button class="promo-button">
+      <div class="promo-img animate-items animate-hide">
+        <img class="animate-show" src="./images/promo-img.jpg" />
+        <span class="promo-title animate-items animate-hide"
+          >We treat your eyes with care</span
+        >
+        <button class="promo-button animate-items animate-hide">
           SEE THE COLLECTION
           <svg
             width="70"
@@ -235,18 +264,23 @@
       <div class="info-wrap">
         <span class="info-title title">Who are we?</span>
         <div class="info-text">
-          <p>
-            Apologies if you were looking for an ordinary optical store. We've
-            hand-picked the unique brands from all over the world to give you
-            the special look for your everyday life.
-          </p>
-          <p>
-            Our glasses will have you looking great and feeling better. We work
-            with independent brands who use the highest-grade of materials,
-            demonstrating detail and craftsmanship in every single pair. A wide
-            range of styles reflect the diversity of our clients and are made to
-            suit different face shapes.
-          </p>
+          <div class="animate-items animate-hide">
+            <p class="animate-show">
+              Apologies if you were looking for an ordinary optical store. We've
+              hand-picked the unique brands from all over the world to give you
+              the special look for your everyday life.
+            </p>
+          </div>
+
+          <div class="animate-items animate-hide">
+            <p class="animate-show">
+              Our glasses will have you looking great and feeling better. We
+              work with independent brands who use the highest-grade of
+              materials, demonstrating detail and craftsmanship in every single
+              pair. A wide range of styles reflect the diversity of our clients
+              and are made to suit different face shapes.
+            </p>
+          </div>
         </div>
       </div>
       <div class="info-img">
