@@ -12,7 +12,6 @@
   display: inline-block;
   width: 410px;
   height: 230px;
-  /*   setSize(410, 230); */
 }
 
 a {
@@ -53,9 +52,17 @@ a {
   /*  line-height: 82px; */
 }
 
-.promo-text {
+.promo-title {
   font-size: 84px;
   line-height: 130px;
+  transform: translate(0px, 120%);
+  opacity: 0;
+  transition: all 0.8s ease 0s;
+}
+
+.promo-title.active {
+  transform: translate(0px, 0px);
+  opacity: 1;
 }
 
 .promo-button {
@@ -64,24 +71,33 @@ a {
   border: none;
   background-color: inherit;
   cursor: pointer;
+
+  transform: translate(0px, 120%);
+  opacity: 0;
+  transition: all 0.8s ease 0s;
+}
+
+.promo-button.active {
+  transform: translate(0px, 0px);
+  opacity: 1;
+  transition: all 0.8s ease 0.4s;
 }
 
 .promo-container {
-  margin-top: 12px;
   margin-bottom: 150px;
 }
 
 .promo-img {
   position: relative;
-  margin-top: 70px;
+  margin-top: 50px;
   margin-bottom: 70px;
   margin-left: 120px;
 }
 
-.promo-img .promo-text {
+.promo-img .promo-title {
   position: absolute;
   left: 10%;
-  bottom: 25%;
+  bottom: 27%;
 }
 
 .promo-img .promo-button {
@@ -213,7 +229,20 @@ a {
   line-height: 30px;
 }
 
-.info-text > p {
+.animate-show {
+  /*   transform: translate(0px, 120%); */
+  transform: translate(-120%, 0px);
+  opacity: 0;
+  transition: all 0.8s ease 0s;
+}
+
+.animate-show.active,
+.active .animate-show {
+  transform: translate(0px, 0px);
+  opacity: 1;
+}
+
+.info-text p {
   margin-bottom: 30px;
 }
 
