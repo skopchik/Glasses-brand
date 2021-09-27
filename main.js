@@ -5,7 +5,7 @@ import { GLTFLoader } from 'https://threejsfundamentals.org/threejs/resources/th
 import { OrbitControls } from 'https://threejsfundamentals.org/threejs/resources/threejs/r132/examples/jsm/controls/OrbitControls.js';
 
 const canvas = document.querySelector('#c');
-const renderer = new THREE.WebGLRenderer({ canvas, alpha: true/* , antialias: true */ });
+const renderer = new THREE.WebGLRenderer({ canvas, alpha: true/* , antialias: true  */ });
 const sceneElements = [];
 const clearColor = new THREE.Color('#000');
 
@@ -16,12 +16,12 @@ class GLTFModels {
     constructor(options) {
 
         this.id = options.id;
-        if (this.name) {
+        if (options.name) {
             this.name = options.name;
             document.querySelector(`#${this.id} + .showcase-title`).textContent = this.name;
         }
 
-        if (this.price) {
+        if (options.price) {
             this.price = options.price;
             document.querySelector(`#${this.id} ~ .showcase-price`).textContent = `$${this.price}`;
         }
@@ -101,21 +101,42 @@ ScrollModel1: {
     });
 
     const { scene, camera, controls, pointLight } = scrollModel.makeScene();
-    pointLight.position.set(5, 5, 45);
+
+    pointLight.position.set(0, 0, 45);
+
+    /*     const light = new THREE.DirectionalLight(0xFFFFFF, 10);
+        light.position.set(0, 100, -40);
+        light.target.position.set(0, 0, 60);
+        scene.add(light);
+        scene.add(light.target);
+        const helper = new THREE.DirectionalLightHelper(light);
+        scene.add(helper); */
+
+
     scrollModel.loadModel();
     scrollModel.addScene(scrollModel.createElem(), (time, rect) => {
         camera.aspect = rect.width / rect.height;
         camera.updateProjectionMatrix();
 
-        scrollModel.addModelRotation(+0.009);
-
-        /*       function moveModel() {
-                  const t = document.body.getBoundingClientRect().top;
-                  scene.rotation.y += 0.01;
-                  renderer.render(scene, camera);
-              }
-              window.addEventListener("scroll", moveModel); */
-
+        let currentTimeline = window.pageYOffset / 500;
+        let aimTimeline = window.pageYOffset / 500;
+        function moveModel() {
+            currentTimeline += (aimTimeline - currentTimeline) * 0.9;
+            const rx = currentTimeline * (-0.6) + 0.4;
+            const ry = (currentTimeline * 0.9 + 1) * Math.PI * 2;
+            scene.rotation.set(rx, ry, 0);
+            renderer.render(scene, camera);
+        }
+        window.addEventListener("scroll", function () {
+            aimTimeline = window.pageYOffset / 500;
+            moveModel();
+        });
+        if (pageYOffset > 560) {
+            document.querySelector(`#${scrollModel.id}`).style.display = 'none';
+        }
+        if (pageYOffset < 560) {
+            document.querySelector(`#${scrollModel.id}`).style.display = 'block';
+        }
 
         controls.autoRotate = false;
         renderer.render(scene, camera);
@@ -139,14 +160,31 @@ ScrollModel2: {
     scrollModel.addScene(scrollModel.createElem(), (time, rect) => {
         camera.aspect = rect.width / rect.height;
         camera.updateProjectionMatrix();
+        let currentTimeline = window.pageYOffset / 500;
+        let aimTimeline = window.pageYOffset / 500;
+        function moveModel() {
+            currentTimeline += (aimTimeline - currentTimeline) * 0.9;
+            const rx = currentTimeline * (-0.6) + 0.4;
+            const ry = (currentTimeline * (-0.9) + 1) * Math.PI * 2;
+            scene.rotation.set(rx, ry, 0);
+            renderer.render(scene, camera);
+        }
+        window.addEventListener("scroll", function () {
+            aimTimeline = window.pageYOffset / 500;
+            moveModel();
+        });
+        if (pageYOffset > 560) {
+            document.querySelector(`#${scrollModel.id}`).style.display = 'none';
+        }
+        if (pageYOffset < 560) {
+            document.querySelector(`#${scrollModel.id}`).style.display = 'block';
+        }
 
-        scrollModel.addModelRotation(-0.009);
 
         controls.autoRotate = false;
         renderer.render(scene, camera);
     }, controls);
 }
-
 
 
 NewInStockFirstModel: {
@@ -166,7 +204,6 @@ NewInStockFirstModel: {
     model1.addScene(model1.createElem(), (time, rect) => {
         camera.aspect = rect.width / rect.height;
         camera.updateProjectionMatrix();
-        /* model1.addModelRotation(-0.009); */
         renderer.render(scene, camera);
     }, controls);
 }
@@ -276,7 +313,6 @@ BestsellersThirdModel: {
     }, controls);
 }
 
-
 function resizeRendererToDisplaySize(renderer) {
 
     const canvas = renderer.domElement;
@@ -312,13 +348,11 @@ function animate(time) {
             renderer.setScissor(left, positiveYUpBottom, width, height);
             renderer.setViewport(left, positiveYUpBottom, width, height);
             fn(time, rect);
-
+            controls.update();
         }
-        controls.update();
     }
     requestAnimationFrame(animate);
 }
 
 requestAnimationFrame(animate);
-
 

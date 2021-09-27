@@ -337,7 +337,7 @@ a {
 .fly {
   position: fixed;
   z-index: 1;
-  display: inline-block;
+  display: block;
   width: 200px;
   height: 200px;
 }
