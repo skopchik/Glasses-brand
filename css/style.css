@@ -5,7 +5,8 @@
   width: 100%;
   height: 100%;
   display: block;
-  z-index: -1; /* чтобы холст появлялся позади других элементов */
+  z-index: -1;
+  /* z-index: -1;  чтобы холст появлялся позади других элементов */
 }
 
 .diagram {
@@ -320,4 +321,30 @@ a {
   justify-content: space-around;
   border-left: 2px solid rgb(0, 0, 0);
   padding-left: 35px;
+}
+
+.scroll-model {
+  transform: scale(0);
+  opacity: 0;
+}
+
+.scroll-model.active {
+  transform: scale(1);
+  opacity: 1;
+  transition: all 0.8s ease-in 0.5s;
+}
+
+.fly {
+  position: fixed;
+  z-index: 1;
+  display: inline-block;
+  width: 200px;
+  height: 200px;
+}
+
+#scrollModel1 {
+  left: 0;
+}
+#scrollModel2 {
+  right: 0;
 }

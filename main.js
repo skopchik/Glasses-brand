@@ -5,7 +5,7 @@ import { GLTFLoader } from 'https://threejsfundamentals.org/threejs/resources/th
 import { OrbitControls } from 'https://threejsfundamentals.org/threejs/resources/threejs/r132/examples/jsm/controls/OrbitControls.js';
 
 const canvas = document.querySelector('#c');
-const renderer = new THREE.WebGLRenderer({ canvas, alpha: true });
+const renderer = new THREE.WebGLRenderer({ canvas, alpha: true/* , antialias: true */ });
 const sceneElements = [];
 const clearColor = new THREE.Color('#000');
 
@@ -14,11 +14,17 @@ renderer.setPixelRatio(window.devicePixelRatio);
 class GLTFModels {
 
     constructor(options) {
-        this.name = options.name;
-        this.price = options.price;
+
         this.id = options.id;
-        document.querySelector(`#${this.id} + .showcase-title`).textContent = this.name;
-        document.querySelector(`#${this.id} ~ .showcase-price`).textContent = `$${this.price}`;
+        if (this.name) {
+            this.name = options.name;
+            document.querySelector(`#${this.id} + .showcase-title`).textContent = this.name;
+        }
+
+        if (this.price) {
+            this.price = options.price;
+            document.querySelector(`#${this.id} ~ .showcase-price`).textContent = `$${this.price}`;
+        }
 
         this.loadPath = options.loadPath;
         this.cameraFov = options.cameraFov;
@@ -47,8 +53,9 @@ class GLTFModels {
         const camera = this.camera;
         const controls = this.controls;
 
-        controls.maxDistance = 50;
-        controls.minDistance = 0;
+        /*  controls.maxDistance = 50;
+         controls.minDistance = 0; */
+        controls.enableZoom = false;
         controls.enableDamping = true;
         controls.autoRotate = true;
         controls.autoRotateSpeed = 5;
@@ -60,7 +67,7 @@ class GLTFModels {
         const ambientLight = new THREE.AmbientLight(0xffffff);
         scene.add(pointLight, ambientLight);
 
-        return { scene, camera, controls };
+        return { scene, camera, controls, pointLight };
     }
 
     loadModel() {
@@ -82,6 +89,65 @@ class GLTFModels {
     }
 
 }
+
+ScrollModel1: {
+    const scrollModel = new GLTFModels({
+        id: "scrollModel1",
+        loadPath: "eye-model",
+        cameraFov: 75,
+        cameraPositionX: 0,
+        cameraPositionY: 0,
+        cameraPositionZ: 60,
+    });
+
+    const { scene, camera, controls, pointLight } = scrollModel.makeScene();
+    pointLight.position.set(5, 5, 45);
+    scrollModel.loadModel();
+    scrollModel.addScene(scrollModel.createElem(), (time, rect) => {
+        camera.aspect = rect.width / rect.height;
+        camera.updateProjectionMatrix();
+
+        scrollModel.addModelRotation(+0.009);
+
+        /*       function moveModel() {
+                  const t = document.body.getBoundingClientRect().top;
+                  scene.rotation.y += 0.01;
+                  renderer.render(scene, camera);
+              }
+              window.addEventListener("scroll", moveModel); */
+
+
+        controls.autoRotate = false;
+        renderer.render(scene, camera);
+    }, controls);
+}
+
+
+ScrollModel2: {
+    const scrollModel = new GLTFModels({
+        id: "scrollModel2",
+        loadPath: "eye-model",
+        cameraFov: 75,
+        cameraPositionX: 0,
+        cameraPositionY: 0,
+        cameraPositionZ: 60,
+    });
+
+    const { scene, camera, controls, pointLight } = scrollModel.makeScene();
+    pointLight.position.set(5, 5, 45);
+    scrollModel.loadModel();
+    scrollModel.addScene(scrollModel.createElem(), (time, rect) => {
+        camera.aspect = rect.width / rect.height;
+        camera.updateProjectionMatrix();
+
+        scrollModel.addModelRotation(-0.009);
+
+        controls.autoRotate = false;
+        renderer.render(scene, camera);
+    }, controls);
+}
+
+
 
 NewInStockFirstModel: {
     const model1 = new GLTFModels({
@@ -254,4 +320,5 @@ function animate(time) {
 }
 
 requestAnimationFrame(animate);
+
 
