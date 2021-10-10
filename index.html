@@ -5,6 +5,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Glasses brand</title>
+    <link
+      rel="shortcut icon"
+      href="/images/favicon/eye-icon.png"
+      type="image/png"
+    />
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -14,15 +20,19 @@
     <link rel="stylesheet" href="css/reset.css" />
     <link rel="stylesheet" href="css/normalize.css" />
     <link rel="stylesheet" href="css/style.css" />
-    <!-- <link rel="stylesheet" href="css/carousel.css" /> -->
+    <script
+      defer
+      src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.8.0/gsap.min.js"
+    ></script>
+    <!--     <script src="https://code.createjs.com/1.0.0/tweenjs.min.js"></script> -->
+
     <script defer type="module" src="./main.js"></script>
+    <!--     <script defer type="module" src="./MEM.js"></script> -->
     <script defer src="./animate.js"></script>
-    <!-- <script src="./vue-carousel-3d/vue-carousel-3d-master/docs/public/js/vue.js"></script>
-    <script src="./vue-carousel-3d/vue-carousel-3d-master/dist/carousel-3d.umd.min.js"></script> -->
   </head>
 
   <body>
-    <canvas id="c"></canvas>
+    <canvas id="main-canvas"></canvas>
     <header class="header">
       <div class="header-navbar">
         <a href="#" class="header-logo header-navbar-link">e.yes</a>
@@ -33,80 +43,42 @@
       </div>
     </header>
 
-    <div
-      id="scrollModel1"
-      class="fly animate-items animate-hide scroll-model"
-    ></div>
-    <div
-      id="scrollModel2"
-      class="fly animate-items animate-hide scroll-model"
-    ></div>
-
-    <!--  animate-items -->
-    <!--  
-    <div id="example">
-      <carousel-3d :controls-visible="true" :clickable="false">
-        <slide v-for="(slide, i) in slides" :index="i">
-          <figure>
-            <figcaption>ААААААААААААААААААА</figcaption>
-          </figure>
-        </slide>
-      </carousel-3d>
-    </div>
-
-   <script>
-      new Vue({
-        el: "#example",
-        data: {
-          slides: 5,
-        },
-        components: {
-          "carousel-3d": window["carousel-3d"].Carousel3d,
-          slide: window["carousel-3d"].Slide,
-        },
-      });
-    </script> -->
+    <!--<div id="scrollModels" class="fly animate-items animate-hide scroll-model"></div> -->
 
     <div class="promo-container">
-      <div class="promo-img animate-items animate-hide">
-        <img
-          class="animate-show"
-          style="opacity: 0"
-          src="./images/promo-img.jpg"
-        />
-        <span class="promo-title animate-items animate-hide unselectable"
-          >We treat your eyes with care</span
+      <span class="promo-title animate-items animate-hide unselectable"
+        >We treat your eyes with care</span
+      >
+      <button class="promo-button animate-items animate-hide">
+        SEE THE COLLECTION
+        <svg
+          width="70"
+          height="17"
+          viewBox="0 0 55 17"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
         >
-        <button class="promo-button animate-items animate-hide">
-          SEE THE COLLECTION
-          <svg
-            width="70"
-            height="17"
-            viewBox="0 0 55 17"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M0.723694 8.5H54.2763"
-              stroke="black"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
-            <path
-              d="M53.9145 8.49998C51.2609 8.26389 45.5921 6.37498 44.1447 0.708313"
-              stroke="black"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
-            <path
-              d="M53.9145 8.5C51.2609 8.73609 45.5921 10.625 44.1447 16.2917"
-              stroke="black"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
-          </svg>
-        </button>
-      </div>
+          <path
+            d="M0.723694 8.5H54.2763"
+            stroke="black"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+          <path
+            d="M53.9145 8.49998C51.2609 8.26389 45.5921 6.37498 44.1447 0.708313"
+            stroke="black"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+          <path
+            d="M53.9145 8.5C51.2609 8.73609 45.5921 10.625 44.1447 16.2917"
+            stroke="black"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+      </button>
+      <div id="carousel-model"></div>
     </div>
 
     <div class="shop-container">
@@ -272,9 +244,9 @@
       </button>
     </div>
 
-    <p class="brand-names-decor unselectable">CarreraRodenstock</p>
+    <!--     <p class="brand-names-decor unselectable">CarreraRodenstock</p>
     <p class="brand-names-decor unselectable">ModernLegacyTIJN</p>
-
+ -->
     <div class="info-container">
       <div class="info-wrap">
         <span class="info-title title">Who are we?</span>

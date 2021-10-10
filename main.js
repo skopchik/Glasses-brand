@@ -3,9 +3,15 @@
 import * as THREE from 'https://threejsfundamentals.org/threejs/resources/threejs/r132/build/three.module.js';
 import { GLTFLoader } from 'https://threejsfundamentals.org/threejs/resources/threejs/r132/examples/jsm/loaders/GLTFLoader.js';
 import { OrbitControls } from 'https://threejsfundamentals.org/threejs/resources/threejs/r132/examples/jsm/controls/OrbitControls.js';
+/* import TWEEN from 'https://cdn.jsdelivr.net/npm/@tweenjs/tween.js@18.5.0/dist/tween.esm.js';
 
-const canvas = document.querySelector('#c');
-const renderer = new THREE.WebGLRenderer({ canvas, alpha: true/* , antialias: true  */ });
+const limitScrollItem1 = document.querySelector(".shop-img-wrap");
+const limitScrollItem2 = document.querySelector(".header-navbar");
+const limitScrollItemPosition = limitScrollItem1.getBoundingClientRect().top - limitScrollItem2.getBoundingClientRect().bottom;
+ */
+const loader = new GLTFLoader();
+const canvas = document.querySelector('#main-canvas');
+const renderer = new THREE.WebGLRenderer({ canvas, alpha: true });
 const sceneElements = [];
 const clearColor = new THREE.Color('#000');
 
@@ -14,23 +20,21 @@ renderer.setPixelRatio(window.devicePixelRatio);
 class GLTFModels {
 
     constructor(options) {
-
         this.id = options.id;
-        if (options.name) {
+        if (options.name && options.price) {
             this.name = options.name;
-            document.querySelector(`#${this.id} + .showcase-title`).textContent = this.name;
-        }
-
-        if (options.price) {
             this.price = options.price;
+            document.querySelector(`#${this.id} + .showcase-title`).textContent = this.name;
             document.querySelector(`#${this.id} ~ .showcase-price`).textContent = `$${this.price}`;
         }
-
         this.loadPath = options.loadPath;
         this.cameraFov = options.cameraFov;
         this.cameraPositionX = options.cameraPositionX;
         this.cameraPositionY = options.cameraPositionY;
         this.cameraPositionZ = options.cameraPositionZ;
+        this.pointLightPositionX = options.pointLightPositionX;
+        this.pointLightPositionY = options.pointLightPositionY;
+        this.pointLightPositionZ = options.pointLightPositionZ;
     }
 
     createElem() {
@@ -42,7 +46,6 @@ class GLTFModels {
         sceneElements.push({ elem, fn, controls });
     }
 
-
     makeScene() {
 
         this.camera = new THREE.PerspectiveCamera(this.cameraFov, window.innerWidth / window.innerHeight, 0.1, 1000);
@@ -50,140 +53,175 @@ class GLTFModels {
         this.controls = new OrbitControls(this.camera, document.querySelector(`#${this.id}`));
 
         const scene = this.scene;
-        const camera = this.camera;
-        const controls = this.controls;
 
-        /*  controls.maxDistance = 50;
-         controls.minDistance = 0; */
+        const camera = this.camera;
+        camera.position.set(this.cameraPositionX, this.cameraPositionY, this.cameraPositionZ);
+
+        const controls = this.controls;
         controls.enableZoom = false;
         controls.enableDamping = true;
         controls.autoRotate = true;
         controls.autoRotateSpeed = 5;
 
-        camera.position.set(this.cameraPositionX, this.cameraPositionY, this.cameraPositionZ);
-
         const pointLight = new THREE.PointLight(0xffffff);
-        pointLight.position.set(5, 5, 5);
+        if (this.pointLightPositionX && this.pointLightPositionY && this.pointLightPositionZ) {
+            pointLight.position.set(this.pointLightPositionX, this.pointLightPositionY, this.pointLightPositionZ);
+            scene.add(pointLight);
+        } else if (this.loadPath === "heart-shaped" || this.loadPath === "round-shaped") {
+            pointLight.position.set(0, 0, 40);
+            scene.add(pointLight);
+        }
+        const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
+        scene.add(directionalLight);
         const ambientLight = new THREE.AmbientLight(0xffffff);
-        scene.add(pointLight, ambientLight);
+        scene.add(ambientLight);
 
-        return { scene, camera, controls, pointLight };
+        return { scene, camera, controls };
     }
 
     loadModel() {
         const scene = this.scene;
-        const loader = new GLTFLoader();
-        loader.load(`./glasses/${this.loadPath}/scene.gltf`, (gltf) => {
-            gltf.scene.traverse(c => {
+        loader.load(`./glasses/${this.loadPath}/scene.gltf`, (model) => {
+            model.scene.traverse(c => {
                 c.castShadow = true;
             });
-            scene.add(gltf.scene);
+            scene.add(model.scene);
         });
     }
 
-    addModelRotation(scrollSpeed) {
-        const scene = this.scene;
-        window.addEventListener('wheel', (event) => {
-            scene.rotation.y += scrollSpeed * (event.deltaY * (Math.PI / 180));
-        });
-    }
-
-}
-
-ScrollModel1: {
-    const scrollModel = new GLTFModels({
-        id: "scrollModel1",
-        loadPath: "eye-model",
-        cameraFov: 75,
-        cameraPositionX: 0,
-        cameraPositionY: 0,
-        cameraPositionZ: 60,
-    });
-
-    const { scene, camera, controls, pointLight } = scrollModel.makeScene();
-
-    pointLight.position.set(0, 0, 45);
-
-    /*     const light = new THREE.DirectionalLight(0xFFFFFF, 10);
-        light.position.set(0, 100, -40);
-        light.target.position.set(0, 0, 60);
-        scene.add(light);
-        scene.add(light.target);
-        const helper = new THREE.DirectionalLightHelper(light);
-        scene.add(helper); */
-
-
-    scrollModel.loadModel();
-    scrollModel.addScene(scrollModel.createElem(), (time, rect) => {
-        camera.aspect = rect.width / rect.height;
-        camera.updateProjectionMatrix();
-
-        let currentTimeline = window.pageYOffset / 500;
-        let aimTimeline = window.pageYOffset / 500;
-        function moveModel() {
-            currentTimeline += (aimTimeline - currentTimeline) * 0.9;
-            const rx = currentTimeline * (-0.6) + 0.4;
-            const ry = (currentTimeline * 0.9 + 1) * Math.PI * 2;
-            scene.rotation.set(rx, ry, 0);
-            renderer.render(scene, camera);
-        }
-        window.addEventListener("scroll", function () {
-            aimTimeline = window.pageYOffset / 500;
-            moveModel();
-        });
-        if (pageYOffset > 560) {
-            document.querySelector(`#${scrollModel.id}`).style.display = 'none';
-        }
-        if (pageYOffset < 560) {
-            document.querySelector(`#${scrollModel.id}`).style.display = 'block';
-        }
-
-        controls.autoRotate = false;
-        renderer.render(scene, camera);
-    }, controls);
+    /* Ошибка, крутится вся сцена, а не сама модель */
+    /*  addModelRotation(scrollSpeed) {
+         const scene = this.scene;
+         window.addEventListener('wheel', (event) => {
+             scene.rotation.y += scrollSpeed * (event.deltaY * (Math.PI / 180));
+         });
+     } */
 }
 
 
-ScrollModel2: {
-    const scrollModel = new GLTFModels({
-        id: "scrollModel2",
-        loadPath: "eye-model",
-        cameraFov: 75,
+/* 
+    let start = { x: 0, y: 0, z: 60 };
+    let target1 = { x: -20, y: 5, z: 50 };
+    let tween1 = new TWEEN.Tween(start);
+    tween1.to(target1, 3000).easing(TWEEN.Easing.Linear.None).start();
+    let angle = 0;
+    const update = function () {
+ 
+        camera.position.z += 50 * Math.sin(angle);
+        camera.position.x += 50 * Math.cos(angle);
+        angle += Math.PI / 180 * 2;
+
+    };
+    tween1.onUpdate(update); */
+
+/* let currentTimeline = window.pageYOffset / 500;
+ let aimTimeline = window.pageYOffset / 500;
+ function moveModel() {
+     currentTimeline += (aimTimeline - currentTimeline) * 0.9;
+     const rx = currentTimeline * (-0.6) + 0.4;
+     const ry = (currentTimeline * 0.9 + 1) * Math.PI * 2;
+     scene.rotation.set(rx, ry, 0);
+     renderer.render(scene, camera);
+ }
+ window.addEventListener("scroll", function () {
+     aimTimeline = window.pageYOffset / 500;
+     moveModel();
+ }); */
+/* 
+            if (pageYOffset > limitScrollItemPosition - 200) {
+                document.querySelector(`#${scrollModel.id}`).style.display = 'none';
+            }
+            if (pageYOffset < limitScrollItemPosition - 200) {
+                document.querySelector(`#${scrollModel.id}`).style.display = 'block';
+            } */
+
+
+/* ___________________ 3D-MODELS ___________________ */
+
+carouselModel: {
+    const carouselModel = new GLTFModels({
+        id: "carousel-model",
+        cameraFov: 60,
         cameraPositionX: 0,
-        cameraPositionY: 0,
-        cameraPositionZ: 60,
+        cameraPositionY: 5,
+        cameraPositionZ: 20,
     });
 
-    const { scene, camera, controls, pointLight } = scrollModel.makeScene();
-    pointLight.position.set(5, 5, 45);
-    scrollModel.loadModel();
-    scrollModel.addScene(scrollModel.createElem(), (time, rect) => {
+    const { scene, camera, controls } = carouselModel.makeScene();
+    /*     const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
+        scene.add(directionalLight); */
+    carouselModel.addScene(carouselModel.createElem(), (time, rect) => {
         camera.aspect = rect.width / rect.height;
         camera.updateProjectionMatrix();
-        let currentTimeline = window.pageYOffset / 500;
-        let aimTimeline = window.pageYOffset / 500;
-        function moveModel() {
-            currentTimeline += (aimTimeline - currentTimeline) * 0.9;
-            const rx = currentTimeline * (-0.6) + 0.4;
-            const ry = (currentTimeline * (-0.9) + 1) * Math.PI * 2;
-            scene.rotation.set(rx, ry, 0);
-            renderer.render(scene, camera);
-        }
-        window.addEventListener("scroll", function () {
-            aimTimeline = window.pageYOffset / 500;
-            moveModel();
-        });
-        if (pageYOffset > 560) {
-            document.querySelector(`#${scrollModel.id}`).style.display = 'none';
-        }
-        if (pageYOffset < 560) {
-            document.querySelector(`#${scrollModel.id}`).style.display = 'block';
-        }
-
-
-        controls.autoRotate = false;
         renderer.render(scene, camera);
+        controls.enabled = false;
+        controls.autoRotate = false;
     }, controls);
+
+    const radius = 7;
+    const camPos = carouselModel.cameraPositionZ;
+    let count = 3;
+    let circle = Math.PI * 2;
+    let angle = circle / count;
+    let currAngle = {
+        val: Math.PI / 2
+    };
+
+    loader.load('/glasses/animal_crossing_bell_bag/scene.gltf', (gltf) => {
+        let model1 = gltf.scene;
+        model1.scale.set(0.01, 0.01, 0.01);
+        model1.position.set(
+            radius * Math.sin(circle),
+            0,
+            radius * Math.cos(circle),
+        );
+        circle -= angle;
+        model1.lookAt(0, 0, 0);
+        scene.add(model1);
+    });
+
+    loader.load('/glasses/book_-_encyclopedia/scene.gltf', (gltf) => {
+        let model2 = gltf.scene;
+        model2.scale.set(2, 2, 2);
+        model2.position.set(
+            radius * Math.sin(circle),
+            0,
+            radius * Math.cos(circle),
+        );
+        circle -= angle;
+        model2.lookAt(0, 0, 0);
+        /*   model2.lookAt(-180, 10, -180); */
+        scene.add(model2);
+
+    });
+
+    loader.load('/glasses/low_poly_purple_flowers/scene.gltf', (gltf) => {
+        let model3 = gltf.scene;
+        model3.scale.set(0.03, 0.03, 0.03);
+        model3.position.set(
+            radius * Math.sin(circle),
+            0,
+            radius * Math.cos(circle),
+        );
+        circle -= angle;
+        model3.lookAt(0, 0, 0);
+        /*   model3.lookAt(-180, 10, -180); */
+        scene.add(model3);
+    });
+
+    const rotate = () => {
+        gsap.to(currAngle, {
+            val: '+=' + angle,
+            onUpdate: () => {
+                camera.position.x = Math.cos(currAngle.val) * camPos;
+                camera.position.z = Math.sin(currAngle.val) * camPos;
+                camera.lookAt(0, 0, 0);
+            },
+            onComplete: () => console.log(currAngle.val)
+        });
+    };
+
+    carouselModel.createElem().addEventListener('click', rotate, false);
 }
 
 
@@ -207,6 +245,7 @@ NewInStockFirstModel: {
         renderer.render(scene, camera);
     }, controls);
 }
+
 
 NewInStockSecondModel: {
     const model2 = new GLTFModels({
@@ -314,7 +353,6 @@ BestsellersThirdModel: {
 }
 
 function resizeRendererToDisplaySize(renderer) {
-
     const canvas = renderer.domElement;
     const width = canvas.clientWidth;
     const height = canvas.clientHeight;
@@ -349,10 +387,10 @@ function animate(time) {
             renderer.setViewport(left, positiveYUpBottom, width, height);
             fn(time, rect);
             controls.update();
+            /*       TWEEN.update(); */
         }
     }
     requestAnimationFrame(animate);
 }
-
 requestAnimationFrame(animate);
 
