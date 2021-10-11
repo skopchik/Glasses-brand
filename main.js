@@ -166,7 +166,7 @@ carouselModel: {
         val: Math.PI / 2
     };
 
-    loader.load('/glasses/animal_crossing_bell_bag/scene.gltf', (gltf) => {
+    loader.load('./glasses/animal_crossing_bell_bag/scene.gltf', (gltf) => {
         let model1 = gltf.scene;
         model1.scale.set(0.01, 0.01, 0.01);
         model1.position.set(
@@ -181,7 +181,7 @@ carouselModel: {
         scene.add(model1);
     });
 
-    loader.load('/glasses/book_-_encyclopedia/scene.gltf', (gltf) => {
+    loader.load('./glasses/book_-_encyclopedia/scene.gltf', (gltf) => {
         let model2 = gltf.scene;
         model2.scale.set(2, 2, 2);
         model2.position.set(
@@ -197,7 +197,7 @@ carouselModel: {
         scene.add(model2);
     });
 
-    loader.load('/glasses/low_poly_purple_flowers/scene.gltf', (gltf) => {
+    loader.load('./glasses/low_poly_purple_flowers/scene.gltf', (gltf) => {
         let model3 = gltf.scene;
         model3.scale.set(0.03, 0.03, 0.03);
         model3.position.set(
