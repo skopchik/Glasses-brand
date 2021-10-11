@@ -15,6 +15,20 @@
   cursor: pointer;
 }
 
+.carousel-container {
+  display: flex;
+  align-items: center;
+}
+
+.carouselButton {
+  margin-right: 40px;
+  margin-left: 40px;
+  height: 100px;
+  border: none;
+  background-color: inherit;
+  cursor: pointer;
+}
+
 .diagram {
   display: inline-block;
   width: 410px;

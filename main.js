@@ -1,5 +1,4 @@
 "use strict";
-
 import * as THREE from 'https://threejsfundamentals.org/threejs/resources/threejs/r132/build/three.module.js';
 import { GLTFLoader } from 'https://threejsfundamentals.org/threejs/resources/threejs/r132/examples/jsm/loaders/GLTFLoader.js';
 import { OrbitControls } from 'https://threejsfundamentals.org/threejs/resources/threejs/r132/examples/jsm/controls/OrbitControls.js';
@@ -167,7 +166,7 @@ carouselModel: {
         val: Math.PI / 2
     };
 
-    loader.load('./glasses/animal_crossing_bell_bag/scene.gltf', (gltf) => {
+    loader.load('/glasses/animal_crossing_bell_bag/scene.gltf', (gltf) => {
         let model1 = gltf.scene;
         model1.scale.set(0.01, 0.01, 0.01);
         model1.position.set(
@@ -177,10 +176,12 @@ carouselModel: {
         );
         circle -= angle;
         model1.lookAt(0, 0, 0);
+        model1.userData.draggable = true;
+        model1.userData.name = "Money bag";
         scene.add(model1);
     });
 
-    loader.load('./glasses/book_-_encyclopedia/scene.gltf', (gltf) => {
+    loader.load('/glasses/book_-_encyclopedia/scene.gltf', (gltf) => {
         let model2 = gltf.scene;
         model2.scale.set(2, 2, 2);
         model2.position.set(
@@ -191,11 +192,12 @@ carouselModel: {
         circle -= angle;
         model2.lookAt(0, 0, 0);
         /*   model2.lookAt(-180, 10, -180); */
+        model2.userData.draggable = true;
+        model2.userData.name = "Book";
         scene.add(model2);
-
     });
 
-    loader.load('./glasses/low_poly_purple_flowers/scene.gltf', (gltf) => {
+    loader.load('/glasses/low_poly_purple_flowers/scene.gltf', (gltf) => {
         let model3 = gltf.scene;
         model3.scale.set(0.03, 0.03, 0.03);
         model3.position.set(
@@ -206,6 +208,8 @@ carouselModel: {
         circle -= angle;
         model3.lookAt(0, 0, 0);
         /*   model3.lookAt(-180, 10, -180); */
+        model3.userData.draggable = true;
+        model3.userData.name = "Flowers";
         scene.add(model3);
     });
 
@@ -221,11 +225,68 @@ carouselModel: {
         });
     };
 
-    carouselModel.createElem().addEventListener('click', rotate, false);
+    const rotate2 = () => {
+        gsap.to(currAngle, {
+            val: '-=' + angle,
+            onUpdate: () => {
+                camera.position.x = Math.cos(currAngle.val) * camPos;
+                camera.position.z = Math.sin(currAngle.val) * camPos;
+                camera.lookAt(0, 0, 0);
+            },
+            onComplete: () => console.log(currAngle.val)
+        });
+    };
+
+
+    document.querySelector(".carouselButtonRight").addEventListener('click', rotate, false);
+    document.querySelector(".carouselButtonLeft").addEventListener('click', rotate2, false);
+    /*   carouselModel.createElem().addEventListener('click', rotate2, false); */
+
+
+
+    const raycaster = new THREE.Raycaster();
+    const clickMouse = new THREE.Vector2();
+    const moveMouse = new THREE.Vector2();
+    let draggable;
+
+    console.log('window.innerWidth: ', window.innerWidth);
+    console.log('window.innerHeight: ', window.innerHeight);
+    carouselModel.createElem().addEventListener('click', event => {
+
+        // calculate mouse position in normalized device coordinates
+        // (-1 to +1) for both components
+        clickMouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+        /*   console.log('event.clientX: ', event.clientX); */
+        clickMouse.y = - (event.clientY / window.innerHeight) * 2 + 1;
+        /*       console.log('event.clientY: ', event.clientY); */
+        // update the picking ray with the camera and mouse position
+        raycaster.setFromCamera(clickMouse, camera);
+        // calculate objects intersecting the picking ray
+
+        /*   let arr = [];
+          for (let i = 0; i < scene.children.length; i++) {
+              if (scene.children[i].type === "Group") {
+                  arr.push(scene.children[i]);
+              }
+          }
+          console.log(arr[0]);
+          const intersects = raycaster.intersectObjects(arr); */
+
+
+        const intersects = raycaster.intersectObjects(scene.children, true);
+
+        /*   console.log('intersects: ', intersects); */
+        if (intersects.length > 0 && intersects[0].object.name) {
+            /*   draggable = intersects[0].object; */
+            console.log(`found - ${intersects[0].object.name}`);
+        }
+    });
 }
 
 
 NewInStockFirstModel: {
+
+
     const model1 = new GLTFModels({
         name: "Round Glasses",
         price: "220",
@@ -239,6 +300,7 @@ NewInStockFirstModel: {
 
     const { scene, camera, controls } = model1.makeScene();
     model1.loadModel();
+
     model1.addScene(model1.createElem(), (time, rect) => {
         camera.aspect = rect.width / rect.height;
         camera.updateProjectionMatrix();
