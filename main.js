@@ -237,56 +237,66 @@ carouselModel: {
         });
     };
 
-
     document.querySelector(".carouselButtonRight").addEventListener('click', rotate, false);
     document.querySelector(".carouselButtonLeft").addEventListener('click', rotate2, false);
-    /*   carouselModel.createElem().addEventListener('click', rotate2, false); */
-
-
 
     const raycaster = new THREE.Raycaster();
     const clickMouse = new THREE.Vector2();
     const moveMouse = new THREE.Vector2();
-    let draggable;
 
     console.log('window.innerWidth: ', window.innerWidth);
     console.log('window.innerHeight: ', window.innerHeight);
     carouselModel.createElem().addEventListener('click', event => {
-
         // calculate mouse position in normalized device coordinates
         // (-1 to +1) for both components
-        clickMouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-        /*   console.log('event.clientX: ', event.clientX); */
-        clickMouse.y = - (event.clientY / window.innerHeight) * 2 + 1;
-        /*       console.log('event.clientY: ', event.clientY); */
+        clickMouse.x =
+            ((event.clientX - carouselModel.createElem().offsetLeft + window.pageXOffset) /
+                carouselModel.createElem().clientWidth) *
+            2 -
+            1;
+        clickMouse.y =
+            -(
+                (event.clientY - carouselModel.createElem().offsetTop + window.pageYOffset) /
+                carouselModel.createElem().clientHeight
+            ) *
+            2 +
+            1;
+
         // update the picking ray with the camera and mouse position
         raycaster.setFromCamera(clickMouse, camera);
         // calculate objects intersecting the picking ray
 
-        /*   let arr = [];
-          for (let i = 0; i < scene.children.length; i++) {
-              if (scene.children[i].type === "Group") {
-                  arr.push(scene.children[i]);
-              }
-          }
-          console.log(arr[0]);
-          const intersects = raycaster.intersectObjects(arr); */
-
-
         const intersects = raycaster.intersectObjects(scene.children, true);
+        console.log('intersects: ', intersects);
 
-        /*   console.log('intersects: ', intersects); */
-        if (intersects.length > 0 && intersects[0].object.name) {
-            /*   draggable = intersects[0].object; */
-            console.log(`found - ${intersects[0].object.name}`);
+        function getContainerObjByChild(obj) {
+            if (obj.userData.draggable) { return obj; }
+            else if (obj.parent !== null) { return getContainerObjByChild(obj.parent); }
+            else { return null; }
+        }
+
+
+
+        if (intersects.length > 0) {
+            for (let i = 0; i < intersects.length; i++) {
+                let container = getContainerObjByChild(intersects[i].object);
+                if (container.userData.name === 'Money bag') {
+                    window.open('https://www.google.com/search?q=money&sxsrf=AOaemvLxr4leltK8coXmZKfsdZFHLJHtmg:1634046039711&source=lnms&tbm=isch&sa=X&ved=2ahUKEwjB2_jt_8TzAhVCgf0HHfHHCOQQ_AUoAXoECAIQAw&biw=1366&bih=625&dpr=1#imgrc=YUOCmp3Yv37AfM');
+                }
+                if (container.userData.name === 'Book') {
+                    window.open('https://www.google.com/search?q=book&hl=ru&sxsrf=AOaemvJuQ7yR_1t6jsec1f_mDaROz7k1PQ:1634046299542&source=lnms&tbm=isch&sa=X&ved=2ahUKEwj_zevpgMXzAhVIsKQKHTzaBOEQ_AUoAXoECAIQAw&cshid=1634046325301471&biw=1366&bih=625&dpr=1#imgrc=lkYmlrY0gXeGkM');
+                }
+                if (container.userData.name === 'Flowers') {
+                    window.open('https://www.google.com/search?q=flowers&sxsrf=AOaemvJRl6nlp7sfwOuoNGS2gKuiSZA9Mw:1634046380873&source=lnms&tbm=isch&sa=X&ved=2ahUKEwj_7c-QgcXzAhUxSEEAHTJPDq0Q_AUoAXoECAIQAw&biw=1366&bih=625&dpr=1#imgrc=RfUQ_0SdSVxZyM');
+                }
+            }
+
         }
     });
 }
 
 
 NewInStockFirstModel: {
-
-
     const model1 = new GLTFModels({
         name: "Round Glasses",
         price: "220",
