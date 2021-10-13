@@ -1,7 +1,7 @@
 "use strict";
-import * as THREE from 'https://threejsfundamentals.org/threejs/resources/threejs/r132/build/three.module.js';
-import { GLTFLoader } from 'https://threejsfundamentals.org/threejs/resources/threejs/r132/examples/jsm/loaders/GLTFLoader.js';
-import { OrbitControls } from 'https://threejsfundamentals.org/threejs/resources/threejs/r132/examples/jsm/controls/OrbitControls.js';
+import * as THREE from 'https://threejsfundamentals.org/threejs/resources/threejs/r125/build/three.module.js';
+import { GLTFLoader } from 'https://threejsfundamentals.org/threejs/resources/threejs/r125/examples/jsm/loaders/GLTFLoader.js';
+import { OrbitControls } from 'https://threejsfundamentals.org/threejs/resources/threejs/r125/examples/jsm/controls/OrbitControls.js';
 /* import TWEEN from 'https://cdn.jsdelivr.net/npm/@tweenjs/tween.js@18.5.0/dist/tween.esm.js';
 
 const limitScrollItem1 = document.querySelector(".shop-img-wrap");
@@ -213,7 +213,7 @@ carouselModel: {
         scene.add(model3);
     });
 
-    const rotate = () => {
+    const rotateCarouselRight = () => {
         gsap.to(currAngle, {
             val: '+=' + angle,
             onUpdate: () => {
@@ -225,7 +225,7 @@ carouselModel: {
         });
     };
 
-    const rotate2 = () => {
+    const rotateCarouselLeft = () => {
         gsap.to(currAngle, {
             val: '-=' + angle,
             onUpdate: () => {
@@ -237,8 +237,8 @@ carouselModel: {
         });
     };
 
-    document.querySelector(".carouselButtonRight").addEventListener('click', rotate, false);
-    document.querySelector(".carouselButtonLeft").addEventListener('click', rotate2, false);
+    document.querySelector(".carouselButtonRight").addEventListener('click', rotateCarouselRight, false);
+    document.querySelector(".carouselButtonLeft").addEventListener('click', rotateCarouselLeft, false);
 
     const raycaster = new THREE.Raycaster();
     const clickMouse = new THREE.Vector2();
@@ -278,20 +278,20 @@ carouselModel: {
 
 
         if (intersects.length > 0) {
-            for (let i = 0; i < intersects.length; i++) {
-                let container = getContainerObjByChild(intersects[i].object);
-                if (container.userData.name === 'Money bag') {
-                    window.open('https://www.google.com/search?q=money&sxsrf=AOaemvLxr4leltK8coXmZKfsdZFHLJHtmg:1634046039711&source=lnms&tbm=isch&sa=X&ved=2ahUKEwjB2_jt_8TzAhVCgf0HHfHHCOQQ_AUoAXoECAIQAw&biw=1366&bih=625&dpr=1#imgrc=YUOCmp3Yv37AfM');
-                }
-                if (container.userData.name === 'Book') {
-                    window.open('https://www.google.com/search?q=book&hl=ru&sxsrf=AOaemvJuQ7yR_1t6jsec1f_mDaROz7k1PQ:1634046299542&source=lnms&tbm=isch&sa=X&ved=2ahUKEwj_zevpgMXzAhVIsKQKHTzaBOEQ_AUoAXoECAIQAw&cshid=1634046325301471&biw=1366&bih=625&dpr=1#imgrc=lkYmlrY0gXeGkM');
-                }
-                if (container.userData.name === 'Flowers') {
-                    window.open('https://www.google.com/search?q=flowers&sxsrf=AOaemvJRl6nlp7sfwOuoNGS2gKuiSZA9Mw:1634046380873&source=lnms&tbm=isch&sa=X&ved=2ahUKEwj_7c-QgcXzAhUxSEEAHTJPDq0Q_AUoAXoECAIQAw&biw=1366&bih=625&dpr=1#imgrc=RfUQ_0SdSVxZyM');
-                }
-            }
 
+            let container = getContainerObjByChild(intersects[0].object);
+            if (container.userData.name === 'Money bag') {
+                window.open('https://www.google.com/search?q=money&sxsrf=AOaemvLxr4leltK8coXmZKfsdZFHLJHtmg:1634046039711&source=lnms&tbm=isch&sa=X&ved=2ahUKEwjB2_jt_8TzAhVCgf0HHfHHCOQQ_AUoAXoECAIQAw&biw=1366&bih=625&dpr=1#imgrc=YUOCmp3Yv37AfM');
+            }
+            if (container.userData.name === 'Book') {
+                window.open('https://www.google.com/search?q=book&hl=ru&sxsrf=AOaemvJuQ7yR_1t6jsec1f_mDaROz7k1PQ:1634046299542&source=lnms&tbm=isch&sa=X&ved=2ahUKEwj_zevpgMXzAhVIsKQKHTzaBOEQ_AUoAXoECAIQAw&cshid=1634046325301471&biw=1366&bih=625&dpr=1#imgrc=lkYmlrY0gXeGkM');
+            }
+            if (container.userData.name === 'Flowers') {
+                window.open('https://www.google.com/search?q=flowers&sxsrf=AOaemvJRl6nlp7sfwOuoNGS2gKuiSZA9Mw:1634046380873&source=lnms&tbm=isch&sa=X&ved=2ahUKEwj_7c-QgcXzAhUxSEEAHTJPDq0Q_AUoAXoECAIQAw&biw=1366&bih=625&dpr=1#imgrc=RfUQ_0SdSVxZyM');
+            }
         }
+
+
     });
 }
 
