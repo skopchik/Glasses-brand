@@ -106,32 +106,8 @@ class GLTFModels {
             scene.add(model.scene);
         });
     }
-
-    /* Ошибка, крутится вся сцена, а не сама модель */
-    /*  addModelRotation(scrollSpeed) {
-           const scene = this.scene;
-           window.addEventListener('wheel', (event) => {
-               scene.rotation.y += scrollSpeed * (event.deltaY * (Math.PI / 180));
-           });
-       } */
 }
 
-/* let currentTimeline = window.pageYOffset / 500;
- let aimTimeline = window.pageYOffset / 500;
- function moveModel() {
-     currentTimeline += (aimTimeline - currentTimeline) * 0.9;
-     const rx = currentTimeline * (-0.6) + 0.4;
-     const ry = (currentTimeline * 0.9 + 1) * Math.PI * 2;
-     scene.rotation.set(rx, ry, 0);
-     renderer.render(scene, camera);
- }
- window.addEventListener("scroll", function () {
-     aimTimeline = window.pageYOffset / 500;
-     moveModel();
- }); */
-/* 
-
-/* ___________________ 3D-MODELS ___________________ */
 
 carouselModel: {
     const carouselModel = new GLTFModels({
@@ -142,9 +118,9 @@ carouselModel: {
         cameraPositionZ: 20,
     });
     const { scene, camera, controls } = carouselModel.makeScene();
-    const carouselModelDOM = carouselModel.createElem();
+    const carouselElem = carouselModel.createElem();
     carouselModel.addScene(
-        carouselModelDOM,
+        carouselElem,
         (time, rect) => {
             camera.aspect = rect.width / rect.height;
             camera.updateProjectionMatrix();
@@ -179,34 +155,61 @@ carouselModel: {
         model1.userData.name = "Money bag";
         scene.add(model1);
 
-
+        let startx = model1.position.x;
+        let starty = model1.position.y;
+        let startz = model1.position.z;
         let counter = 0;
-        window.addEventListener("scroll", myScroll);
-        function myScroll() {
-            if (counter === 0) {
-                if (window.pageYOffset > 300) {
-                    counter++;
-                    const coords = { x: 0, y: 0, z: 0 };
-                    const tween = new TWEEN.Tween(coords)
-                        .to({ x: 40, y: -10, z: -2 }, 2000)
-                        .easing(TWEEN.Easing.Quadratic.Out)
-                        .onUpdate(() => {
-                            model1.position.x = coords.x;
-                            model1.position.y = coords.y;
-                            model1.position.z = coords.z;
-                        })
-                        .start();
-                    carouselModelDOM.style.zIndex = 11;
-                    carouselModelDOM.style.position = "fixed";
-                    carouselModelDOM.style.pointerEvents = "none";
-                    carouselModelDOM.style.width = window.innerWidth + "px";
+        let lastScrollTop = 0;
+        window.addEventListener("scroll", function () {
+            let st = window.pageYOffset || document.documentElement.scrollTop;
+            if (st > lastScrollTop) {
+                // downscroll code
+                scrollDown();
+                function scrollDown() {
+                    if (counter === 0) { // if counter is 1, it will not execute
+                        if (window.pageYOffset > 200) {
+                            counter = 1;
+                            const coords = { x: startx, y: starty, z: startz };
+                            const tween = new TWEEN.Tween(coords)
+                                .to({ x: 40, y: -10, z: -2 }, 2000)
+                                .easing(TWEEN.Easing.Quadratic.Out)
+                                .onUpdate(() => {
+                                    model1.position.x = coords.x;
+                                    model1.position.y = coords.y;
+                                    model1.position.z = coords.z;
+
+                                    camera.position.set(0, 5, 20);
+                                })
+                                .start();
+                            carouselElem.style.position = "fixed";
+                            carouselElem.style.pointerEvents = "none";
+                            carouselElem.style.width = document.body.scrollWidth + "px";
+                        }
+                    }
+                }
+            } else {
+                // upscroll code
+                if (window.pageYOffset < 200) {
+                    scrollUp();
+                    function scrollUp() {
+                        const coords = { x: model1.position.x, y: model1.position.y, z: model1.position.z };
+                        const tween = new TWEEN.Tween(coords)
+                            .to({ x: startx, y: starty, z: startz }, 1000)
+                            .easing(TWEEN.Easing.Quadratic.Out)
+                            .onUpdate(() => {
+                                model1.position.x = coords.x;
+                                model1.position.y = coords.y;
+                                model1.position.z = coords.z;
+                            })
+                            .start();
+                        carouselElem.style.position = "static";
+                        carouselElem.style.pointerEvents = "auto";
+                        counter = 0;
+                    }
                 }
             }
-
-            if (window.pageYOffset > 3550) {
-                document.querySelector(`#${carouselModel.id}`).style.display = 'none';
-            }
-        }
+            lastScrollTop = st <= 0 ? 0 : st; // For Mobile or negative scrolling
+        }, false);
     });
 
     loader.load("./glasses/book_-_encyclopedia/scene.gltf", (gltf) => {
@@ -223,28 +226,55 @@ carouselModel: {
         model2.userData.name = "Book";
         scene.add(model2);
 
+        let startx = model2.position.x;
+        let starty = model2.position.y;
+        let startz = model2.position.z;
         let counter = 0;
-        window.addEventListener("scroll", myScroll);
-        function myScroll() {
-            if (counter === 0) {
-                if (window.pageYOffset > 300) {
-                    counter++;
-                    const coords = { x: 0, y: 0 };
-                    const tween = new TWEEN.Tween(coords)
-                        .to({ x: -35, y: -10 }, 2000)
-                        .easing(TWEEN.Easing.Quadratic.Out)
-                        .onUpdate(() => {
-                            model2.position.x = coords.x;
-                            model2.position.y = coords.y;
-                        })
-                        .start();
-                    carouselModelDOM.style.zIndex = 11;
-                    carouselModelDOM.style.position = "fixed";
-                    carouselModelDOM.style.pointerEvents = "none";
-                    carouselModelDOM.style.width = window.innerWidth + "px";
+        let lastScrollTop = 0;
+        window.addEventListener("scroll", function () {
+            let st = window.pageYOffset || document.documentElement.scrollTop;
+            if (st > lastScrollTop) {
+                // downscroll code
+                scrollDown();
+                function scrollDown() {
+                    if (counter === 0) {
+                        if (window.pageYOffset > 200) {
+                            counter = 1;
+                            const coords = { x: startx, y: starty, z: startz };
+                            const tween = new TWEEN.Tween(coords)
+                                .to({ x: -35, y: -10, z: 0 }, 2000)
+                                .easing(TWEEN.Easing.Quadratic.Out)
+                                .onUpdate(() => {
+                                    model2.position.x = coords.x;
+                                    model2.position.y = coords.y;
+                                    model2.position.z = coords.z;
+                                })
+                                .start();
+                        }
+                    }
+                }
+            } else {
+                // upscroll code
+                if (window.pageYOffset < 200) {
+                    scrollUp();
+                    function scrollUp() {
+                        const coords = { x: model2.position.x, y: model2.position.y, z: model2.position.z };
+                        const tween = new TWEEN.Tween(coords)
+                            .to({ x: startx, y: starty, z: startz }, 1000)
+                            .easing(TWEEN.Easing.Quadratic.Out)
+                            .onUpdate(() => {
+                                model2.position.x = coords.x;
+                                model2.position.y = coords.y;
+                                model2.position.z = coords.z;
+                            })
+                            .start();
+                        counter = 0;
+                    }
                 }
             }
-        }
+            lastScrollTop = st <= 0 ? 0 : st; // For Mobile or negative scrolling
+        }, false);
+
     });
 
     loader.load("./glasses/low_poly_purple_flowers/scene.gltf", (gltf) => {
@@ -261,28 +291,52 @@ carouselModel: {
         model3.userData.name = "Flowers";
         scene.add(model3);
 
+        let startx = model3.position.x;
+        let starty = model3.position.y;
+        let startz = model3.position.z;
         let counter = 0;
-        window.addEventListener("scroll", myScroll);
-        function myScroll() {
-            if (counter === 0) { // if counter is 1, it will not execute
-                if (window.pageYOffset > 300) {
-                    counter++; // increment the counter by 1, new value = 1
-                    const coords = { x: 0, y: 0 };
-                    const tween = new TWEEN.Tween(coords)
-                        .to({ x: -40, y: -10 }, 2000)
-                        .easing(TWEEN.Easing.Quadratic.Out)
-                        .onUpdate(() => {
-                            model3.position.x = coords.x;
-                            model3.position.y = coords.y;
-                        })
-                        .start();
-                    carouselModelDOM.style.zIndex = 11;
-                    carouselModelDOM.style.position = "fixed";
-                    carouselModelDOM.style.pointerEvents = "none";
-                    carouselModelDOM.style.width = window.innerWidth + "px";
+        let lastScrollTop = 0;
+        window.addEventListener("scroll", function () {
+            let st = window.pageYOffset || document.documentElement.scrollTop;
+            if (st > lastScrollTop) {
+                // downscroll code
+                scrollDown();
+                function scrollDown() {
+                    if (counter === 0 && window.pageYOffset > 200) {
+                        counter = 1;
+                        const coords = { x: startx, y: starty, z: startz };
+                        const tween = new TWEEN.Tween(coords)
+                            .to({ x: -40, y: -10, z: -3 }, 2000)
+                            .easing(TWEEN.Easing.Quadratic.Out)
+                            .onUpdate(() => {
+                                model3.position.x = coords.x;
+                                model3.position.y = coords.y;
+                                model3.position.z = coords.z;
+                            })
+                            .start();
+                    }
+                }
+            } else {
+                // upscroll code
+                if (window.pageYOffset < 200) {
+                    scrollUp();
+                    function scrollUp() {
+                        const coords = { x: model3.position.x, y: model3.position.y, z: model3.position.z };
+                        const tween = new TWEEN.Tween(coords)
+                            .to({ x: startx, y: starty, z: startz }, 1000)
+                            .easing(TWEEN.Easing.Quadratic.Out)
+                            .onUpdate(() => {
+                                model3.position.x = coords.x;
+                                model3.position.y = coords.y;
+                                model3.position.z = coords.z;
+                            })
+                            .start();
+                        counter = 0;
+                    }
                 }
             }
-        }
+            lastScrollTop = st <= 0 ? 0 : st; // For Mobile or negative scrolling
+        }, false);
     });
 
     const rotateCarouselRight = () => {
@@ -320,22 +374,22 @@ carouselModel: {
     const clickMouse = new THREE.Vector2();
     const moveMouse = new THREE.Vector2();
 
-    carouselModelDOM.addEventListener("click", (event) => {
+    carouselElem.addEventListener("click", (event) => {
         // calculate mouse position in normalized device coordinates
         // (-1 to +1) for both components
         clickMouse.x =
             ((event.clientX -
-                carouselModelDOM.offsetLeft +
+                carouselElem.offsetLeft +
                 window.pageXOffset) /
-                carouselModelDOM.clientWidth) *
+                carouselElem.clientWidth) *
             2 -
             1;
         clickMouse.y =
             -(
                 (event.clientY -
-                    carouselModelDOM.offsetTop +
+                    carouselElem.offsetTop +
                     window.pageYOffset) /
-                carouselModelDOM.clientHeight
+                carouselElem.clientHeight
             ) *
             2 +
             1;
@@ -425,7 +479,7 @@ NewInStockSecondModel: {
     );
 }
 
-NewInStockThirdModel: {
+/* NewInStockThirdModel: {
     const model3 = new GLTFModels({
         name: "Round Glasses",
         price: "220",
@@ -448,7 +502,7 @@ NewInStockThirdModel: {
         },
         controls
     );
-}
+} */
 
 BestsellersFirstModel: {
     const model4 = new GLTFModels({
@@ -499,7 +553,7 @@ BestsellersSecondModel: {
         controls
     );
 }
-
+/* 
 BestsellersThirdModel: {
     const model6 = new GLTFModels({
         name: "Heart Glasses",
@@ -523,7 +577,7 @@ BestsellersThirdModel: {
         },
         controls
     );
-}
+} */
 
 function resizeRendererToDisplaySize(renderer) {
     const canvas = renderer.domElement;
