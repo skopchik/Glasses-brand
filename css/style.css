@@ -111,6 +111,14 @@ a {
   font-size: 70px;
 }
 
+.button {
+  font-size: 17px;
+  line-height: 28px;
+  border: none;
+  background-color: inherit;
+  cursor: pointer;
+}
+
 .promo-container {
   display: flex;
   width: 100%;
@@ -128,28 +136,23 @@ a {
   transition: all 0.8s ease 0s;
 }
 
-.promo-title.active {
-  transform: translate(0px, 0px);
-  opacity: 1;
-}
-
-.button {
-  font-size: 17px;
-  line-height: 28px;
-  border: none;
-  background-color: inherit;
-  cursor: pointer;
-}
-.promo-button {
-  transform: translate(0px, 120%);
+.promo-mobile {
+  transform: scale(0, 0);
   opacity: 0;
-  transition: all 0.8s ease 0s;
+  transition: all 1s ease 0s;
 }
 
-.button.active {
+.promo-button {
+  transform: translate(0px, 130%);
+  opacity: 0;
+  transition: all 1.2s ease 0s;
+}
+
+.promo-title.active,
+.promo-mobile.active,
+.promo-button.active {
   transform: translate(0px, 0px);
   opacity: 1;
-  transition: all 0.8s ease 0.4s;
 }
 
 .shop-container {
