@@ -1,0 +1,76 @@
+/*  
+@media all and (max-width: 768px) {
+} */
+
+@media all and (max-width: 480px) {
+  .header-navbar {
+    width: 100%;
+  }
+
+  .header-navbar-link {
+    display: none;
+  }
+
+  .header-logo {
+    display: block;
+    font-size: 50px;
+    height: 60px;
+    line-height: 58px;
+    border-right: none;
+  }
+
+  #main-canvas,
+  #carousel-model,
+  .promo-button-arrow,
+  .button-text,
+  .carousel-container,
+  .showcase {
+    display: none;
+  }
+
+  .promo-title {
+    margin-top: 10px;
+    font-size: 20px;
+    line-height: 30px;
+  }
+  .button {
+    font-size: 13px;
+  }
+  .promo-button {
+    margin-top: 30px;
+    border: 2px solid rgb(0, 0, 0);
+    box-shadow: 0px 4px 4px rgb(0 0 0 / 25%);
+    padding: 5px;
+  }
+
+  .promo-mobile {
+    margin-top: 30px;
+    display: block;
+    width: 100px;
+  }
+
+  .shop-container {
+    display: block;
+    margin-top: 60px;
+    margin-bottom: 60px;
+  }
+
+  .shop-button {
+    width: 100%;
+    height: 50px;
+    bottom: 0%;
+  }
+
+  .title-wrap {
+    justify-content: space-evenly;
+  }
+  .title {
+    font-size: 30px;
+    line-height: 38px;
+    margin-left: 0;
+  }
+
+  .footer-container {
+    width: 100%;
+  }
+}

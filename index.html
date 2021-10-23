@@ -10,39 +10,35 @@
       href="/images/favicon/eye-icon.png"
       type="image/png"
     />
-
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="css/reset.css" />
-    <link rel="stylesheet" href="css/normalize.css" />
-    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="./css/reset.css" />
+    <link rel="stylesheet" href="./css/normalize.css" />
+    <link rel="stylesheet" href="./css/style.css" />
+    <link rel="stylesheet" href="./css/adaptive.css" />
     <script
       defer
       src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.8.0/gsap.min.js"
     ></script>
     <!--     <script src="https://code.createjs.com/1.0.0/tweenjs.min.js"></script> -->
-
     <script defer type="module" src="./main.js"></script>
-    <!--     <script defer type="module" src="./carousel.js"></script> -->
     <script defer src="./animate.js"></script>
   </head>
 
   <body>
     <canvas id="main-canvas"></canvas>
 
-    <header class="header">
-      <div class="header-navbar">
-        <a href="#" class="header-logo header-navbar-link">e.yes</a>
-        <a href="#" class="header-navbar-link flex-navbar-element">Sun</a>
-        <a href="#" class="header-navbar-link flex-navbar-element">Optical</a>
-        <a href="#" class="header-navbar-link flex-navbar-element">Fit guide</a>
-        <a href="#" class="header-navbar-link">Customer care</a>
-      </div>
-    </header>
+    <div class="header-navbar">
+      <a href="#" class="header-logo header-navbar-link">e.yes</a>
+      <a href="#" class="header-navbar-link flex-navbar-element">Sun</a>
+      <a href="#" class="header-navbar-link flex-navbar-element">Optical</a>
+      <a href="#" class="header-navbar-link flex-navbar-element">Fit guide</a>
+      <a href="#" class="header-navbar-link">Customer care</a>
+    </div>
 
     <!--<div id="scrollModels" class="fly animate-items animate-hide scroll-model"></div> -->
 
@@ -50,9 +46,13 @@
       <span class="promo-title animate-items animate-hide unselectable"
         >We treat your eyes with care</span
       >
-      <button class="promo-button animate-items animate-hide">
+
+      <img class="promo-mobile" src="./images/magnifying-glass.png" />
+      <!--  src="https://img.icons8.com/ios/100/000000/visible--v2.png" -->
+      <button class="promo-button button animate-items animate-hide">
         SEE THE COLLECTION
         <svg
+          class="promo-button-arrow"
           width="70"
           height="17"
           viewBox="0 0 55 17"
@@ -109,9 +109,10 @@
 
     <div class="title-wrap">
       <span class="title">New in stock</span>
-      <button class="promo-button">
-        SEE THE COLLECTION
+      <button class="button">
+        <span class="button-text"> SEE THE COLLECTION </span>
         <svg
+          class="button-arrow"
           width="70"
           height="17"
           viewBox="0 0 55 17"
@@ -162,9 +163,10 @@
 
     <div class="title-wrap">
       <span class="title">Bestsellers</span>
-      <button class="promo-button">
-        SEE THE COLLECTION
+      <button class="button">
+        <span class="button-text"> SEE THE COLLECTION </span>
         <svg
+          class="button-arrow"
           width="70"
           height="17"
           viewBox="0 0 55 17"
@@ -228,9 +230,10 @@
 
     <div class="title-wrap">
       <span class="title">Our brands</span>
-      <button class="promo-button">
-        SEE MORE
+      <button class="button">
+        <span class="button-text"> SEE MORE </span>
         <svg
+          class="button-arrow"
           width="70"
           height="17"
           viewBox="0 0 55 17"
