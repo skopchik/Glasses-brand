@@ -3,22 +3,6 @@
 } */
 
 @media all and (max-width: 480px) {
-  .header-navbar {
-    width: 100%;
-  }
-
-  .header-navbar-link {
-    display: none;
-  }
-
-  .header-logo {
-    display: block;
-    font-size: 50px;
-    /*   height: 60px; */
-    /*   line-height: 58px; */
-    border-right: none;
-  }
-
   #carousel-model,
   .promo-button-arrow,
   .button-text,
@@ -26,14 +10,140 @@
     display: none;
   }
 
+  .button {
+    font-size: 13px;
+  }
+
+  .mobile-logo {
+    display: block;
+    font-size: 50px;
+    line-height: normal;
+  }
+
+  /* BURGER MENU START*/
+
+  .menu-button,
+  .close-menu {
+    display: block;
+    border: none;
+    background-color: inherit;
+  }
+
+  .menu-button {
+    margin-left: 50px;
+  }
+
+  .close-menu {
+    position: absolute;
+    right: 35px;
+    top: 35px;
+  }
+
+  .navbar {
+    margin-top: 10px;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-around;
+    padding-bottom: 10px;
+
+    border-bottom: 1px solid rgb(0, 0, 0);
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  }
+
+  .navbar-panel {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #aabad0;
+    z-index: 15;
+
+    transition: transform 0.2s, opacity 0.2s;
+    transform: translateX(100%);
+    opacity: 0;
+  }
+
+  .is-open {
+    transform: translateX(0%);
+    opacity: 1;
+  }
+
+  .navbar-menu {
+    margin-top: 100px;
+  }
+
+  .menu {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .menu-logo {
+    display: block;
+    font-size: 50px;
+    line-height: 66px;
+    text-shadow: 1px 1px 4px rgb(0, 0, 0);
+    margin-bottom: 15px;
+  }
+
+  .menu-item {
+    height: auto;
+    border: none;
+    box-shadow: none;
+    padding: 5px;
+    font-size: 30px;
+    line-height: 60px;
+  }
+
+  .flex-menu-item {
+    flex-basis: auto;
+  }
+
+  /* .menu-burger span {
+    position: absolute;
+    width: 100%;
+    left: 0;
+    height: 2px;
+    background-color: #000000;
+    top: 10px;
+    box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.25);
+  }
+
+  .menu-burger {
+    position: relative;
+    width: 30px;
+    height: 30px;
+    display: block;
+  }
+
+  .menu-burger::before,
+  .menu-burger::after {
+    position: absolute;
+    content: "";
+    background-color: #000000;
+    width: 100%;
+    left: 0;
+    height: 2px;
+    box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.25);
+  }
+
+  .menu-burger::after {
+    top: 20px;
+  } */
+
+  /* BURGER MENU END */
+  .promo-container {
+    margin: 100px auto;
+  }
+
   .promo-title {
     margin-top: 10px;
     font-size: 20px;
     line-height: 30px;
   }
-  .button {
-    font-size: 13px;
-  }
+
   .promo-button {
     margin-top: 30px;
     border: 2px solid rgb(0, 0, 0);
