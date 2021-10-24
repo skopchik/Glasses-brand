@@ -14,17 +14,15 @@
   .header-logo {
     display: block;
     font-size: 50px;
-    height: 60px;
-    line-height: 58px;
+    /*   height: 60px; */
+    /*   line-height: 58px; */
     border-right: none;
   }
 
-  #main-canvas,
   #carousel-model,
   .promo-button-arrow,
   .button-text,
-  .carousel-container,
-  .showcase {
+  .carousel-container {
     display: none;
   }
 
@@ -69,6 +67,21 @@
     font-size: 30px;
     line-height: 38px;
     margin-left: 0;
+  }
+
+  .showcase-container {
+    flex-direction: column;
+    /* сверху | горизонтально | снизу */
+    /*  margin: 20px 30px 20px; */
+  }
+
+  .showcase-item,
+  .diagram {
+    width: 100%;
+  }
+
+  .showcase-price {
+    margin-bottom: 20px;
   }
 
   .info-container {
@@ -145,11 +158,14 @@
     width: 100%;
     margin-right: 0;
     margin-top: 0;
-    margin-bottom: 10px;
     padding-left: 0;
-    padding-top: 10px;
+    padding-top: 15px;
     border-top: 2px solid rgb(0, 0, 0);
     border-left: none;
     align-items: center;
+  }
+
+  .footer-contacts p {
+    margin-bottom: 10px;
   }
 }
