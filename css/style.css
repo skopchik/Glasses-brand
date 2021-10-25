@@ -9,19 +9,22 @@
   pointer-events: none;
 }
 
-/* 
-#carousel-canvas {
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
+#carousel-model {
+  width: 1000px;
+  height: 500px;
   display: block;
-  z-index: 20;
-} */
+  cursor: pointer;
+}
 
-.promo-mobile {
-  display: none;
+a {
+  color: #000000;
+  text-decoration: none;
+}
+
+.diagram {
+  display: inline-block;
+  width: 410px;
+  height: 230px;
 }
 
 .button {
@@ -32,11 +35,9 @@
   cursor: pointer;
 }
 
-#carousel-model {
-  width: 1000px;
-  height: 500px;
-  display: block;
-  cursor: pointer;
+.promo-container {
+  width: 100%;
+  height: 700px;
 }
 
 .carousel-container {
@@ -44,30 +45,18 @@
   align-items: center;
 }
 
-.carouselButton {
+.carousel-button {
   margin-right: 250px;
   margin-left: 250px;
   display: block;
-  /*  height: 100px; */
   margin-top: 20px;
   border: none;
   background-color: inherit;
   cursor: pointer;
 }
 
-.carouselImage {
+.carousel-image {
   height: 30px;
-}
-
-.diagram {
-  display: inline-block;
-  width: 410px;
-  height: 230px;
-}
-
-a {
-  color: #000000;
-  text-decoration: none;
 }
 
 .menu {
@@ -97,10 +86,11 @@ a {
   line-height: 78px;
 }
 
+.promo-mobile,
 .menu-burger,
 .mobile-logo,
 .menu-button,
-.close-menu {
+.menu-button-close {
   display: none;
 }
 
@@ -122,6 +112,8 @@ a {
 }
 
 .promo-mobile {
+  margin-top: 30px;
+  width: 100px;
   transform: scale(0, 0);
   opacity: 0;
   transition: all 1s ease 0s;
@@ -148,6 +140,7 @@ a {
 
 .shop-img-wrap {
   position: relative;
+  width: 100%;
 }
 
 .shop-img {
@@ -160,11 +153,11 @@ a {
   right: 0%;
   bottom: 0.5%;
   text-align: center;
-  width: 280px;
-  height: 110px;
+  width: 40%;
+  height: 20%;
   border: none;
   font-size: 18px;
-  background-color: #aabad0; /*  #ffbcbc; */
+  background-color: #aabad0;
   cursor: pointer;
 }
 
@@ -197,10 +190,6 @@ a {
   margin-right: 20px;
 }
 
-.showcase-img {
-  width: calc(90vw / 3);
-}
-
 .showcase-item {
   cursor: pointer;
   font-family: "Roboto", sans-serif;
@@ -231,13 +220,6 @@ a {
   -ms-user-select: none; /* Internet Explorer/Edge */
   user-select: none; /* Non-prefixed version, currently
                                   not supported by any browser */
-}
-
-.brand-names-decor {
-  color: #ffbcbc;
-  font-family: "Roboto", sans-serif;
-  font-size: 152px;
-  font-weight: 700;
 }
 
 .info-container {
@@ -357,28 +339,3 @@ a {
   border-left: 2px solid rgb(0, 0, 0);
   padding-left: 35px;
 }
-
-/* .scroll-model {
-  transform: scale(0);
-  opacity: 0;
-}
-
-.scroll-model.active {
-  transform: scale(1);
-  opacity: 1;
-  transition: all 0.8s ease-in 0.5s;
-}
-
-.fly {
-  position: fixed;
-  z-index: -2;
-}
-
-#scrollModels {
-  z-index: -2;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-}
- */

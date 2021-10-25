@@ -23,7 +23,7 @@
   /* BURGER MENU START*/
 
   .menu-button,
-  .close-menu {
+  .menu-button-close {
     display: block;
     border: none;
     background-color: inherit;
@@ -33,7 +33,7 @@
     margin-left: 50px;
   }
 
-  .close-menu {
+  .menu-button-close {
     position: absolute;
     right: 35px;
     top: 35px;
@@ -45,7 +45,6 @@
     align-items: baseline;
     justify-content: space-around;
     padding-bottom: 10px;
-
     border-bottom: 1px solid rgb(0, 0, 0);
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   }
@@ -55,7 +54,7 @@
     top: 0;
     left: 0;
     width: 100%;
-    height: 100vh;;
+    height: 100vh;
     background-color: #aabad0;
     z-index: 15;
 
@@ -73,10 +72,16 @@
     margin-top: 100px;
   }
 
-  .menu {
-    display: flex;
+  .menu,
+  .info-wrap,
+  .info-container,
+  .footer-wrap {
     flex-direction: column;
     align-items: center;
+  }
+
+  .menu {
+    display: flex;
     justify-content: center;
   }
 
@@ -101,41 +106,11 @@
     flex-basis: auto;
   }
 
-  /* .menu-burger span {
-    position: absolute;
-    width: 100%;
-    left: 0;
-    height: 2px;
-    background-color: #000000;
-    top: 10px;
-    box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.25);
-  }
-
-  .menu-burger {
-    position: relative;
-    width: 30px;
-    height: 30px;
-    display: block;
-  }
-
-  .menu-burger::before,
-  .menu-burger::after {
-    position: absolute;
-    content: "";
-    background-color: #000000;
-    width: 100%;
-    left: 0;
-    height: 2px;
-    box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.25);
-  }
-
-  .menu-burger::after {
-    top: 20px;
-  } */
-
   /* BURGER MENU END */
+
   .promo-container {
     margin: 100px auto;
+    height: auto;
   }
 
   .promo-title {
@@ -152,9 +127,7 @@
   }
 
   .promo-mobile {
-    margin-top: 30px;
     display: block;
-    width: 100px;
   }
 
   .shop-container {
@@ -179,14 +152,14 @@
     margin-left: 0;
   }
 
-  .showcase-container {
+  .showcase-container,
+  .footer-headline {
     flex-direction: column;
-    /* сверху | горизонтально | снизу */
-    /*  margin: 20px 30px 20px; */
   }
 
   .showcase-item,
-  .diagram {
+  .diagram,
+  .footer-container {
     width: 100%;
   }
 
@@ -197,14 +170,10 @@
   .info-container {
     margin-top: 0;
     margin-bottom: 60px;
-    flex-direction: column;
-    align-items: center;
   }
 
   .info-wrap {
     display: flex;
-    flex-direction: column;
-    align-items: center;
     max-width: none;
     max-height: none;
     margin-right: 0;
@@ -230,14 +199,6 @@
     margin-top: 5px;
   }
 
-  .footer-container {
-    width: 100%;
-  }
-
-  .footer-headline {
-    flex-direction: column;
-  }
-
   .footer-logo {
     margin-left: 0;
     font-size: 50px;
@@ -251,15 +212,11 @@
     line-height: 20px;
   }
 
-  .footer-wrap {
-    flex-direction: column;
-    align-items: center;
-  }
-
   .footer-menu {
     max-width: 90%;
     margin-top: 20px;
   }
+
   .footer-menu-wrap:not(:last-child) {
     margin-right: 30px;
   }

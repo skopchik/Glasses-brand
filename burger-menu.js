@@ -1,7 +1,7 @@
 "use strict";
 const menuBtn = document.querySelector(".menu-button");
 const menu = document.querySelector(".navbar-panel");
-const menuCloseBtn = document.querySelector(".close-menu");
+const menuCloseBtn = document.querySelector(".menu-button-close");
 
 const disableScroll = () => {
     const widthScroll = window.innerWidth - document.body.offsetWidth;
