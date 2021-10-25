@@ -154,6 +154,9 @@ carouselModel: {
         carouselElem.style.position = "fixed";
         carouselElem.style.pointerEvents = "none";
         carouselElem.style.width = document.body.scrollWidth + "px";
+        document.querySelectorAll(".carousel-button").forEach(element => {
+            element.style.visibility = "hidden";
+        });
     }
 
     function scrollUp(startX, startY, startZ, posX, posY, posZ, model) {
@@ -167,6 +170,9 @@ carouselModel: {
             .start();
         carouselElem.style.position = "static";
         carouselElem.style.pointerEvents = "auto";
+        document.querySelectorAll(".carousel-button").forEach(element => {
+            element.style.visibility = "visible";
+        });
     }
 
     loader.load("./glasses/animal_crossing_bell_bag/scene.gltf", (gltf) => {
